@@ -1,0 +1,29 @@
+{
+    "name": "michielkempen/nova-polymorphic-field",
+    "description": "A Laravel Nova field container allowing to depend on other fields values",
+    "keywords": [
+        "laravel",
+        "nova"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MichielKempen\\NovaPolymorphicField\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MichielKempen\\NovaPolymorphicField\\FieldServiceProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
