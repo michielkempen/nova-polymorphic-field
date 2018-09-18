@@ -6,7 +6,7 @@
 
 ### Description
 
-A Laravel Nova field that allows you to create a single collection of polymorphic resources.
+A Laravel Nova field that allows you to create a **single collection of polymorphic resources**.
 
 Depending on the polymorphic type you select:
 1. Different fields will be populated on the form/detail page of your resource.
