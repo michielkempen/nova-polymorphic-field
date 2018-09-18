@@ -24,13 +24,12 @@ composer require michielkempen/nova-polymorphic-field
 
 ### Usage
 
-1. Add a `morphs` field to the migration of the base model.
+1. Add a `morphs` field to the migration of your base model.
 2. Add the `MichielKempen\NovaPolymorphicField\HasPolymorphicFields` trait to your Nova Resource.
 3. Add the `MichielKempen\NovaPolymorphicField\PolymorphicField` to your Nova Resource `fields` method.
-
-You can specify the different polymorphic types by calling the `type($name, $modelClass)` on the `PolymorphicField`.
-- The `$name` parameter is a readable name you assign to your polymorphic type that will be displayed in the select field.
-- The `$modelClass` parameter is the class of the polymorphic model. Make sure you pass the model class and not the resource class!
+4. Specify the different polymorphic types by calling the `type($name, $modelClass)` on the `PolymorphicField`.
+    - The `$name` parameter is a readable name you assign to your polymorphic type.
+    - The `$modelClass` parameter is the class of the polymorphic model. **Make sure you pass the model class and not the resource class!**
 
 ### Example
 
@@ -70,7 +69,7 @@ class NewsPost extends Resource
             Text::make('Title'),
 
             PolymorphicField::make('Type')
-                ->type('Form', Video::class, [
+                ->type('Video', Video::class, [
 
                     Text::make('Url'),
 
