@@ -73,12 +73,12 @@ class NewsPost extends Resource
             Text::make('Title'),
 
             PolymorphicField::make('Type')
-                ->type('Video', Video::class, [
+                ->type('Video', \App\Video::class, [
 
                     Text::make('Url'),
 
                 ])
-                ->type('Article', Article::class, [
+                ->type('Article', \App\Article::class, [
 
                     Image::make('Image'),
 
