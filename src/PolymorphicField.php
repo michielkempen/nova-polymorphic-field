@@ -2,6 +2,7 @@
 
 namespace MichielKempen\NovaPolymorphicField;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
