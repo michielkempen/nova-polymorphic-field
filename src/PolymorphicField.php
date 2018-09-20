@@ -84,7 +84,8 @@ class PolymorphicField extends Field
 
         foreach ($this->meta['types'] as $type) {
 
-            $relatedModel = new $type['value'];
+            $class = Relation::getMorphedModel($type['value']) ?? $type['value'];
+            $relatedModel = new $class;
 
             if($type['value'] == $model->{$this->attribute . '_type'}) {
                 $relatedModel = $relatedModel->newQuery()->findOrFail($model->{$this->attribute . '_id'});
@@ -113,7 +114,8 @@ class PolymorphicField extends Field
 
             if($request->get($attribute) == $type['value']) {
 
-                $relatedModel = new $type['value'];
+                $class = Relation::getMorphedModel($type['value']) ?? $type['value'];
+                $relatedModel = new $class;
 
                 if($type['value'] == $model->{$this->attribute . '_type'}) {
                     $relatedModel = $relatedModel->newQuery()->findOrFail($model->{$this->attribute . '_id'});
