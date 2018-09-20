@@ -85,7 +85,7 @@ class PolymorphicField extends Field
 
         foreach ($this->meta['types'] as $type) {
 
-            $class = array_search($type['value'], Relation::$morphMap) ?? $type['value'];
+            $class = array_search($type['value'], Relation::$morphMap) ?: $type['value'];
             $relatedModel = new $class;
 
             if($type['value'] == $model->{$this->attribute . '_type'}) {
@@ -115,7 +115,7 @@ class PolymorphicField extends Field
 
             if($request->get($attribute) == $type['value']) {
 
-                $class = array_search($type['value'], Relation::$morphMap) ?? $type['value'];
+                $class = array_search($type['value'], Relation::$morphMap) ?: $type['value'];
                 $relatedModel = new $class;
 
                 if($type['value'] == $model->{$this->attribute . '_type'}) {
