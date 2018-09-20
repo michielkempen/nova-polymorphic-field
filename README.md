@@ -6,7 +6,7 @@
 
 ### Description
 
-A Laravel Nova field that allows you to create a **single collection of polymorphic resources**.
+A Laravel Nova field that allows you to create a **collection of polymorphic resources**.
 
 Depending on the polymorphic type you select:
 1. Different fields will be populated on the form/detail page of your resource.
@@ -90,6 +90,21 @@ class NewsPost extends Resource
     }
 }
 ```
+
+### morphMap
+
+By default, the fully qualified class name of the related model will be stored as type field in the base model. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
+
+```php
+use Illuminate\Database\Eloquent\Relations\Relation;
+
+Relation::morphMap([
+    'posts' => 'App\Post',
+    'videos' => 'App\Video',
+]);
+```
+
+You may register the morphMap in the boot function of your AppServiceProvider.
 
 ### License
 
