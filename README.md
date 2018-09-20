@@ -99,8 +99,8 @@ By default, the fully qualified class name of the related model will be stored a
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 Relation::morphMap([
-    'posts' => 'App\Post',
-    'videos' => 'App\Video',
+    'article' => \App\Article::class,
+    'video' => \App\Video::class,
 ]);
 ```
 
