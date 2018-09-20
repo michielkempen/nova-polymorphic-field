@@ -104,7 +104,7 @@ Relation::morphMap([
 ]);
 ```
 
-You may register the morphMap in the boot function of your AppServiceProvider.
+You may register the `morphMap` in the `boot` function of your `AppServiceProvider`.
 
 ### License
 
