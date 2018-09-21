@@ -2,9 +2,9 @@
 
 namespace MichielKempen\NovaPolymorphicField;
 
-use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class PolymorphicField extends Field
 {
@@ -31,7 +31,7 @@ class PolymorphicField extends Field
             $result = null;
 
             foreach ($this->meta['types'] as $type) {
-                if ($type['value'] == $value) {
+                if ($this->normalizeThroughMorphMap($type['value']) == $value) {
                     $result = $type['label'];
                 }
             }
@@ -68,7 +68,7 @@ class PolymorphicField extends Field
         parent::resolveForDisplay($model, $this->attribute.'_type');
 
         foreach ($this->meta['types'] as $index => $type) {
-            $this->meta['types'][$index]['active'] = $type['value'] == $model->{$this->attribute . '_type'};
+            $this->meta['types'][$index]['active'] = $this->normalizeThroughMorphMap($type['value']) == $model->{$this->attribute . '_type'};
         }
     }
 
@@ -85,10 +85,9 @@ class PolymorphicField extends Field
 
         foreach ($this->meta['types'] as $type) {
 
-            $class = array_search($type['value'], Relation::$morphMap) ?: $type['value'];
-            $relatedModel = new $class;
+            $relatedModel = new $type['value'];
 
-            if($type['value'] == $model->{$this->attribute . '_type'}) {
+            if($this->normalizeThroughMorphMap($type['value']) == $model->{$this->attribute . '_type'}) {
                 $relatedModel = $relatedModel->newQuery()->findOrFail($model->{$this->attribute . '_id'});
             }
 
@@ -115,10 +114,9 @@ class PolymorphicField extends Field
 
             if($request->get($attribute) == $type['value']) {
 
-                $class = array_search($type['value'], Relation::$morphMap) ?: $type['value'];
-                $relatedModel = new $class;
+                $relatedModel = new $type['value'];
 
-                if($type['value'] == $model->{$this->attribute . '_type'}) {
+                if($this->normalizeThroughMorphMap($type['value']) == $model->{$this->attribute . '_type'}) {
                     $relatedModel = $relatedModel->newQuery()->findOrFail($model->{$this->attribute . '_id'});
                 } elseif(! is_null($model->{$this->attribute . '_type'})) {
                     $oldRelatedModel = (new $model->{$this->attribute . '_type'})->newQuery()->findOrFail($model->{$this->attribute . '_id'});
@@ -132,9 +130,14 @@ class PolymorphicField extends Field
                 $relatedModel->save();
 
                 $model->{$this->attribute.'_id'} = $relatedModel->id;
-                $model->{$this->attribute.'_type'} = $type['value'];
+                $model->{$this->attribute.'_type'} = $this->normalizeThroughMorphMap($type['value']);
             }
 
         }
+    }
+
+    protected function normalizeThroughMorphMap($value)
+    {
+        return array_search($value, Relation::$morphMap) ?? $value;
     }
 }
