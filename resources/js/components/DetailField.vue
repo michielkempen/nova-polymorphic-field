@@ -26,9 +26,5 @@
 <script>
 	export default {
 		props: ['resource', 'resourceName', 'resourceId', 'field'],
-
-		created() {
-			console.log(this.field.types);
-		}
 	}
 </script>
