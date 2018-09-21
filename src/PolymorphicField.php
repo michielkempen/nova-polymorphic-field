@@ -138,6 +138,6 @@ class PolymorphicField extends Field
 
     protected function normalizeThroughMorphMap($value)
     {
-        return array_search($value, Relation::$morphMap) ?? $value;
+        return array_search($value, Relation::$morphMap) ?: $value;
     }
 }
