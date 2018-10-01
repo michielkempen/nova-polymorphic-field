@@ -153,4 +153,19 @@ class PolymorphicField extends Field
     {
         return Relation::$morphMap[$key] ?? $key;
     }
+
+    /**
+     * When set to true, the field should not be displayed when updating the resource. This can be
+     * used when you do not want the user to change the type once a relationship has been created.
+     *
+     * @return self
+     */
+    public function hideTypeWhenUpdating()
+    {
+        $this->withMeta([
+            'hideTypeWhenUpdating' => true,
+        ]);
+
+        return $this;
+    }
 }
