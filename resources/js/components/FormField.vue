@@ -1,7 +1,7 @@
 <template>
 	<div>
 
-		<default-field :field="field">
+		<default-field :field="field" v-show="shouldShowTypeSelect">
 			<template slot="field">
 				<select
 					:id="field.attribute"
@@ -51,6 +51,18 @@
 		mixins: [FormField, HandlesValidationErrors],
 
 		props: ['resourceName', 'resourceId', 'field'],
+
+		computed: {
+
+			/**
+			 * Do not show the type select option if this is the edit screen
+			 * And we don't want the user to change the polumorphic type.
+			 */
+			shouldShowTypeSelect() {
+				return !(this.resourceId && this.field.hideTypeWhenUpdating)
+			},
+
+		},
 
 		methods: {
 

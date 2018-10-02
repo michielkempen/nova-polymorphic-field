@@ -91,6 +91,30 @@ class NewsPost extends Resource
 }
 ```
 
+You can optionally hide the type selection when updating a resource. This can be useful if you don't want the user to be able to change the **Type** of a polymorphic relationship once it has been created.
+
+```php
+class NewsPost extends Resource
+{
+    use HasPolymorphicFields;
+
+    public function fields(Request $request)
+    {
+        return [
+            ...
+            PolymorphicField::make('Type')
+                ->type('Video', \App\Video::class, [
+                    Text::make('Url'),
+                ])
+                ->type('Article', \App\Article::class, [
+                    Image::make('Image'),
+                    Textarea::make('Text'),
+                ])
+                ->hideTypeWhenUpdating(),
+            ...
+        ];
+```
+
 ### morphMap
 
 By default, the fully qualified class name of the related model will be stored as type field in the base model. However, you may wish to decouple your database from your application's internal structure. In that case, you may define a relationship "morph map" to instruct Eloquent to use a custom name for each model instead of the class name:
