@@ -71,7 +71,9 @@ class PolymorphicField extends Field
             $this->meta['types'][$index]['active'] = $this->mapToKey($type['value']) == $model->{$this->attribute . '_type'};
 
             foreach ($type['fields'] as $field) {
-                $field->resolveForDisplay($model->{$this->attribute});
+                try {
+                    $field->resolveForDisplay($model->{$this->attribute});
+                } catch (\Exception $e) {}
             }
         }
     }
