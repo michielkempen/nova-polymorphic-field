@@ -69,6 +69,10 @@ class PolymorphicField extends Field
 
         foreach ($this->meta['types'] as $index => $type) {
             $this->meta['types'][$index]['active'] = $this->mapToKey($type['value']) == $model->{$this->attribute . '_type'};
+
+            foreach ($type['fields'] as $field) {
+                $field->resolveForDisplay($model->{$this->attribute});
+            }
         }
     }
 
@@ -152,5 +156,20 @@ class PolymorphicField extends Field
     protected function mapToClass($key)
     {
         return Relation::$morphMap[$key] ?? $key;
+    }
+
+    /**
+     * When set to true, the field should not be displayed when updating the resource. This can be
+     * used when you do not want the user to change the type once a relationship has been created.
+     *
+     * @return self
+     */
+    public function hideTypeWhenUpdating()
+    {
+        $this->withMeta([
+            'hideTypeWhenUpdating' => true,
+        ]);
+
+        return $this;
     }
 }
