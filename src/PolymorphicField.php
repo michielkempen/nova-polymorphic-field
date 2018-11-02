@@ -172,4 +172,19 @@ class PolymorphicField extends Field
 
         return $this;
     }
+
+    /**
+     * When set to true, the field should disabled when updating the resource. This can be
+     * used when you do not want the user to change the type once a relationship has been created.
+     *
+     * @return self
+     */
+    public function disableTypeWhenUpdating()
+    {
+        $this->withMeta([
+            'disableTypeWhenUpdating' => true,
+        ]);
+
+        return $this;
+    }
 }
