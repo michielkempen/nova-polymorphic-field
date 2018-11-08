@@ -92,7 +92,8 @@ class PolymorphicField extends Field
             $relatedModel = new $type['value'];
 
             if($this->mapToKey($type['value']) == $model->{$this->attribute . '_type'}) {
-                $relatedModel = $relatedModel->newQuery()->findOrFail($model->{$this->attribute . '_id'});
+                $relatedModel = ($model->{$this->attribute}) ? $model->{$this->attribute}
+                     : $relatedModel->newQuery()->findOrFail($model->{$this->attribute . '_id'});
             }
 
             foreach ($type['fields'] as $field) {
