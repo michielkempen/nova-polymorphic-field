@@ -8,6 +8,7 @@
 					v-model="value"
 					class="w-full form-control form-select"
 					:class="errorClasses"
+					:disabled="disableTypeWhenUpdating ? 'disabled' : ''"
 				>
 					<option value="" selected disabled>
 						{{__('Choose an option')}}
@@ -60,6 +61,14 @@
 			 */
 			shouldShowTypeSelect() {
 				return !(this.resourceId && this.field.hideTypeWhenUpdating)
+			},
+
+			/**
+			 * Do not show the type select option if this is the edit screen
+			 * And we don't want the user to change the polumorphic type.
+			 */
+			shouldDisableTypeSelect() {
+				return !(this.resourceId && this.field.disableTypeWhenUpdating)
 			},
 
 		},
