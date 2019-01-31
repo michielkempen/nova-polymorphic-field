@@ -28,15 +28,13 @@ class PolymorphicField extends Field
         $this->withMeta(['types' => []]);
 
         $this->displayUsing(function ($value) {
-            $result = null;
-
             foreach ($this->meta['types'] as $type) {
                 if ($this->mapToKey($type['value']) == $value) {
-                    $result = $type['label'];
+                    return $type['label'];
                 }
             }
 
-            return $result;
+            return null;
         });
     }
 
@@ -48,15 +46,13 @@ class PolymorphicField extends Field
      */
     public function type(string $label, string $typeClass, array $fields)
     {
-        return $this->withMeta([
-            'types' => array_merge($this->meta['types'], [
-                [
-                    'value' => $typeClass,
-                    'label' => $label,
-                    'fields' => $fields
-                ]
-            ]),
-        ]);
+        $this->meta['types'][] = [
+            'value' => $typeClass,
+            'label' => $label,
+            'fields' => $fields
+        ];
+
+        return $this;
     }
 
     /**
@@ -67,10 +63,10 @@ class PolymorphicField extends Field
     {
         parent::resolveForDisplay($model, $this->attribute.'_type');
 
-        foreach ($this->meta['types'] as $index => $type) {
-            $this->meta['types'][$index]['active'] = $this->mapToKey($type['value']) == $model->{$this->attribute . '_type'};
+        foreach ($this->meta['types'] as &$type) {
+            $type['active'] = $this->mapToKey($type['value']) == $model->{$this->attribute . '_type'};
 
-            foreach ($type['fields'] as $field) {
+            foreach ($type['active'] ? $type['fields'] : [] as $field) {
                 $field->resolveForDisplay($model->{$this->attribute});
             }
         }
