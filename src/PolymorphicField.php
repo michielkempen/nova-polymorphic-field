@@ -163,11 +163,9 @@ class PolymorphicField extends Field
      */
     public function hideTypeWhenUpdating()
     {
-        $this->withMeta([
+        return $this->withMeta([
             'hideTypeWhenUpdating' => true,
         ]);
-
-        return $this;
     }
 
     /**
@@ -178,10 +176,8 @@ class PolymorphicField extends Field
      */
     public function disableTypeWhenUpdating()
     {
-        $this->withMeta([
+        return $this->withMeta([
             'disableTypeWhenUpdating' => true,
         ]);
-
-        return $this;
     }
 }
