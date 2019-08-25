@@ -8,7 +8,7 @@
 					v-model="value"
 					class="w-full form-control form-select"
 					:class="errorClasses"
-					:disabled="disableTypeWhenUpdating ? 'disabled' : ''"
+					:disabled="shouldDisableTypeSelect ? 'disabled' : ''"
 				>
 					<option value="" selected disabled>
 						{{__('Choose an option')}}
