@@ -3,6 +3,7 @@
 namespace MichielKempen\NovaPolymorphicField;
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\FieldCollection;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -21,7 +22,7 @@ trait HasPolymorphicFields
             if ($field instanceof PolymorphicField) {
                 $availableFields[] = $field;
                 foreach ($field->meta['types'] as $type) {
-                    if($this->requestIsAssociateRequest()) {
+                    if ($this->requestIsAssociateRequest()) {
                         $availableFields = array_merge($availableFields, $type['fields']);
                     }
                 }
@@ -38,6 +39,6 @@ trait HasPolymorphicFields
      */
     protected function requestIsAssociateRequest(): bool
     {
-        return ends_with(Route::currentRouteAction(), 'AssociatableController@index');
+        return Str::endsWith(Route::currentRouteAction(), 'AssociatableController@index');
     }
 }
