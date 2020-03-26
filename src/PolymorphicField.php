@@ -126,14 +126,19 @@ class PolymorphicField extends Field
                     $oldRelatedModel->delete();
                 }
 
+                $callbacks = [];
                 foreach ($type['fields'] as $field) {
-                    $field->fill($request, $relatedModel);
+                    $callbacks[] = $field->fill($request, $relatedModel);
                 }
 
                 $relatedModel->save();
 
-                $model->{$this->attribute.'_id'} = $relatedModel->id;
+                $model->{$this->attribute.'_id'}   = $relatedModel->id;
                 $model->{$this->attribute.'_type'} = $this->mapToKey($type['value']);
+
+                return function () use ($callbacks) {
+                    collect(array_filter($callbacks))->each->__invoke();
+                };
             }
 
         }
