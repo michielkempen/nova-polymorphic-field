@@ -30,7 +30,7 @@ class PolymorphicField extends Field
         $this->displayUsing(function ($value) {
 
             foreach ($this->meta['types'] as $type) {
-                if ($this->mapToKey($type['value']) == $value) {
+                if ($this->mapToKey($type['value']) == $this->mapToKey($value)) {
                     return $type['label'];
                 }
             }
