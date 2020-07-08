@@ -10,8 +10,8 @@
 					:class="errorClasses"
 					:disabled="shouldDisableTypeSelect"
 				>
-					<option value="" selected disabled>
-						{{__('Choose an option')}}
+					<option value="" selected :disabled="!field.nullable">
+						{{field.nullable ? '—' : __('Choose an option')}}
 					</option>
 
 					<option
