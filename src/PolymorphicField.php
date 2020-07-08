@@ -2,9 +2,9 @@
 
 namespace MichielKempen\NovaPolymorphicField;
 
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class PolymorphicField extends Field
 {
@@ -113,6 +113,13 @@ class PolymorphicField extends Field
      */
     protected function fillAttributeFromRequest(NovaRequest $request, $requestAttribute, $model, $attribute)
     {
+        if ($this->isNullValue($request->get($attribute))) {
+            $model->{$this->attribute.'_id'} = null;
+            $model->{$this->attribute.'_type'} = '';
+
+            return;
+        }
+
         foreach ($this->meta['types'] as $type) {
 
             if($request->get($attribute) == $type['value']) {
