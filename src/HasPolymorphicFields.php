@@ -105,8 +105,6 @@ trait HasPolymorphicFields
         }
 
         $backtrace = debug_backtrace(null, 10);
-
-        $steps = [];
         foreach($backtrace as $step) {
             if(!isset($step['file'])) {
                 continue;
