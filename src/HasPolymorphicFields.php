@@ -23,7 +23,7 @@ trait HasPolymorphicFields
             if ($field instanceof PolymorphicField) {
                 $availableFields[] = $field;
                 foreach ($field->meta['types'] as $type) {
-                    if ($this->doesRouteRequireChildFields()) {
+                    if ($this->doesRouteRequireChildFieldsAndValidates()) {
                         if($type['value'] == $request->input($field->attribute)) {
                             $this->extractChildFields($type['fields'] ?? []);
                         }
@@ -92,14 +92,30 @@ trait HasPolymorphicFields
     /**
      * @return bool
      */
-    protected function doesRouteRequireChildFields() : bool
+    protected function doesRouteRequireChildFieldsAndValidates() : bool
     {
-        return Str::endsWith(Route::currentRouteAction(), [
+        if(!Str::endsWith(Route::currentRouteAction(), [
             'FieldDestroyController@handle',
             'ResourceUpdateController@handle',
             'ResourceStoreController@handle',
             'AssociatableController@index',
             'MorphableController@index',
-        ]);
+        ])) {
+            return false;
+        }
+
+        $backtrace = debug_backtrace(null, 10);
+
+        $steps = [];
+        foreach($backtrace as $step) {
+            if(!isset($step['file'])) {
+                continue;
+            }
+            if(Str::endsWith($step['file'], ['PerformsValidation.php'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
